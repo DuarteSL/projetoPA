@@ -7,5 +7,9 @@ class Tests {
     fun test() {
         assertTrue(true)
     }
+    @Test
+    fun test_peng(){
+        assertEquals(5,5)
+    }
 
 }
