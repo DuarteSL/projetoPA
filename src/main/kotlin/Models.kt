@@ -1,8 +1,18 @@
 class Document(
-    private val root: Entity
+    private val root: Entity,
+    private val version: Double = 1.0,
+    private val encoding: String = "UTF-8"
 ) {
-    fun getRoot() : Entity {
+    fun getRoot(): Entity {
         return root
+    }
+
+    fun getVersion(): Double {
+        return version
+    }
+
+    fun getEncoding(): String {
+        return encoding
     }
 
     fun accept(visitor: (Entity) -> Boolean) {

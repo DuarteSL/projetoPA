@@ -1,5 +1,8 @@
 fun Document.toText(): String {
-    return getRoot().toText()
+    return buildString {
+        append("<?xml version=\"${getVersion()}\" encoding=\"${getEncoding()}\"?>\n")
+        append(getRoot().toText())
+    }
 }
 
 fun Entity.toText(): String {

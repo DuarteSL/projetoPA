@@ -24,7 +24,8 @@ class TestUtils {
     @Test
     fun testAddAttributes() {
         doc.addAttributes("entity2", "newAttribute", "testeValue")
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\">\n" +
                 "\t\t<entity2 attribute2=\"2\" newAttribute=\"testeValue\"/>\n" +
                 "\t</entity1>\n" +
@@ -36,7 +37,8 @@ class TestUtils {
     @Test
     fun testChangeEntityName() {
         doc.changeEntityName("entity2", "entityteste")
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\">\n" +
                 "\t\t<entityteste attribute2=\"2\"/>\n" +
                 "\t</entity1>\n" +
@@ -48,7 +50,8 @@ class TestUtils {
     @Test
     fun testChangeAttributeName() {
         doc.changeAttributeName("entity2", "attribute2", "newAttribute")
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\">\n" +
                 "\t\t<entity2 newAttribute=\"2\"/>\n" +
                 "\t</entity1>\n" +
@@ -60,7 +63,8 @@ class TestUtils {
     @Test
     fun testRemoveEntity() {
         doc.removeEntity("entity2")
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\"/>\n" +
                 "\t<entity3>teste</entity3>\n" +
                 "</root>\n",doc.toText())
@@ -69,7 +73,8 @@ class TestUtils {
     @Test
     fun testRemoveAttribute() {
         doc.removeAttributeFromEntity("entity2", "attribute2")
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\">\n" +
                 "\t\t<entity2/>\n" +
                 "\t</entity1>\n" +

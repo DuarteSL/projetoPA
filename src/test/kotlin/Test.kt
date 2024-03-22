@@ -28,7 +28,8 @@ class Test {
     @Test
     fun testRemoveChild() {
         entity1.removeChild(entity2)
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\"/>\n" +
                 "\t<entity3/>\n" +
                 "</root>\n", doc.toText())
@@ -37,7 +38,8 @@ class Test {
     @Test
     fun testRemoveAttribute() {
         entity1.removeAttribute(attribute2)
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\">\n" +
                 "\t\t<entity2 attribute2=\"2\"/>\n" +
                 "\t</entity1>\n" +
@@ -48,7 +50,8 @@ class Test {
     @Test
     fun testChangeAttribute() {
         entity1.changeAttribute(attribute2, "testeName")
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\">\n" +
                 "\t\t<entity2 attribute2=\"2\"/>\n" +
                 "\t</entity1>\n" +
@@ -56,7 +59,8 @@ class Test {
                 "</root>\n",doc.toText())
 
         entity1.changeAttribute(attribute2, value="testeValue")
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\">\n" +
                 "\t\t<entity2 attribute2=\"2\"/>\n" +
                 "\t</entity1>\n" +
@@ -64,7 +68,8 @@ class Test {
                 "</root>\n",doc.toText())
 
         entity1.changeAttribute(attribute2, "testeChangeName", "testChangeValue")
-        assertEquals("<root>\n" +
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<root>\n" +
                 "\t<entity1 attribute1=\"1\">\n" +
                 "\t\t<entity2 attribute2=\"2\"/>\n" +
                 "\t</entity1>\n" +
