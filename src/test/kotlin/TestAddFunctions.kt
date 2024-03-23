@@ -4,28 +4,28 @@ import org.junit.jupiter.api.assertThrows
 
 class TestAddFunctions {
 
-    val doc = Document(Entity("root"))
+    val doc = XMLDocument(ParentEntity("root"))
 
     @Test
     fun testAddChild() {
-        val a = Entity("Teste")
+        val a = ParentEntity("Teste")
         doc.getRoot().addChild(a)
         assertTrue(doc.getRoot().getChildren().contains(a))
     }
 
     @Test
     fun testAddAttribute() {
-        val a = Attribute("testeName", "testeValue")
+        val a = XMLAttribute("testeName", "testeValue")
         doc.getRoot().addAttribute(a)
         assertTrue(doc.getRoot().getAttributes().contains(a))
     }
 
     @Test
     fun testAddAttributeWithAnExistingName() {
-        val a = Attribute("testeName", "testeValue1")
-        val b = Attribute("testeName", "testeValue2")
+        val a = XMLAttribute("testeName", "testeValue1")
+        val b = XMLAttribute("testeName", "testeValue2")
         doc.getRoot().addAttribute(a)
-        assertThrows<IllegalStateException> {
+        org.junit.jupiter.api.assertThrows<IllegalStateException> {
             doc.getRoot().addAttribute(b)
         }
         assertEquals(1, doc.getRoot().getAttributes().size)

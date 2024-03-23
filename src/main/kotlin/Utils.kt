@@ -1,18 +1,18 @@
-fun Document.addAttributes(entityName: String, attributeName: String, attributeValue: String) {
+fun XMLDocument.addAttributes(entityName: String, attributeName: String, attributeValue: String) {
     accept {
-        if (it.getName() == entityName) it.addAttribute(Attribute(attributeName, attributeValue))
+        if (it.getName() == entityName) it.addAttribute(XMLAttribute(attributeName, attributeValue))
         true
     }
 }
 
-fun Document.changeEntityName(entityName: String, newName: String) {
+fun XMLDocument.changeEntityName(entityName: String, newName: String) {
     accept {
         if (it.getName() == entityName) it.setName(newName)
         true
     }
 }
 
-fun Document.changeAttributeName(entityName: String, attributeName: String, newName: String) {
+fun XMLDocument.changeAttributeName(entityName: String, attributeName: String, newName: String) {
     accept {
         if (it.getName() == entityName) {
             it.getAttributes().forEach {a ->
@@ -23,21 +23,21 @@ fun Document.changeAttributeName(entityName: String, attributeName: String, newN
     }
 }
 
-fun Document.removeEntity(entityName: String) {
-    val list = mutableListOf<Pair<Entity,Entity>>()
+fun XMLDocument.removeEntity(entityName: String) {
+    val list = mutableListOf<Pair<XMLEntity,XMLEntity>>()
     accept {
-        if (it.getName() == entityName) list.add(Pair(it.getParent()!!,it))
+        if (it.getName() == entityName) list.add(Pair(it.getParent()!!, it))
         true
     }
     list.forEach {
-        it.first.removeChild(it.second)
+        (it.first as ParentEntity).removeChild(it.second)
     }
 }
 
-fun Document.removeAttributeFromEntity(entityName: String, attributeName: String) {
+fun XMLDocument.removeAttributeFromEntity(entityName: String, attributeName: String) {
     accept {
         if (it.getName() == entityName) {
-            var attr: Attribute? = null
+            var attr: XMLAttribute? = null
             it.getAttributes().forEach {a ->
                 if (a.getName() == attributeName) attr = a
             }
@@ -45,6 +45,5 @@ fun Document.removeAttributeFromEntity(entityName: String, attributeName: String
         }
         true
     }
-
 }
 
