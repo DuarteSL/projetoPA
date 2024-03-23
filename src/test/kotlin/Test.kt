@@ -3,12 +3,12 @@ import org.junit.jupiter.api.Test
 
 class Test {
 
-    val doc = Document(Entity("root"))
-    val entity1 = Entity("entity1")
-    val entity2 = Entity("entity2")
-    val entity3 = Entity("entity3")
-    val attribute1 = Attribute("attribute1", "1")
-    val attribute2 = Attribute("attribute2", "2")
+    val doc = XMLDocument(ParentEntity("root"))
+    val entity1 = ParentEntity("entity1")
+    val entity2 = SimpleEntity("entity2")
+    val entity3 = SimpleEntity("entity3")
+    val attribute1 = XMLAttribute("attribute1", "1")
+    val attribute2 = XMLAttribute("attribute2", "2")
 
     init {
         doc.getRoot().addChild(entity1)
