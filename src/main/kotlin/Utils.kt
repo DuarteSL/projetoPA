@@ -47,3 +47,18 @@ fun XMLDocument.removeAttributeFromEntity(entityName: String, attributeName: Str
     }
 }
 
+fun XMLDocument.filterByXPath(xpath: String): List<XMLEntity> {
+    val xpathsplit = xpath.split("/").filter { it.isNotBlank() }
+    var current = mutableListOf<XMLEntity>()
+    current.add(getRoot())
+
+    xpathsplit.drop(1).forEach { i->
+        var next = mutableListOf<XMLEntity>()
+        current.forEach { entity->
+            if (entity is ParentEntity) next.addAll(entity.getChildren().filter { it.getName() == i} )
+        }
+        current = next
+    }
+    return current
+}
+

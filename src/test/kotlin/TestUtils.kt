@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import javax.swing.text.html.parser.Entity
 
 class TestUtils {
 
@@ -81,5 +82,23 @@ class TestUtils {
                 "\t<entity3>teste</entity3>\n" +
                 "\t<entity2/>\n" +
                 "</root>\n",doc.toText())
+    }
+
+    @Test
+    fun testFilterByXPath() {
+        val pa = ParentEntity("entity1")
+        val si = SimpleEntity("entity2")
+
+        doc.getRoot().addChild(pa)
+        pa.addChild(si)
+
+        val xpath1 = "root/entity1/entity2"
+        val xpath2 = "root/entity3"
+
+        val a = doc.filterByXPath(xpath1)
+        val b = doc.filterByXPath(xpath2)
+
+        assertEquals(listOf(entity2,si), a)
+        assertEquals(listOf(entity3), b)
     }
 }
