@@ -26,6 +26,11 @@ class Test {
     }
 
     @Test
+    fun testGetEntityCount() {
+        assertEquals(4, doc.getEntityCount())
+    }
+
+    @Test
     fun testRemoveChild() {
         entity1.removeChild(entity2)
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +

@@ -15,6 +15,15 @@ class XMLDocument(
         return encoding
     }
 
+    fun getEntityCount(): Int {
+        var i = 0
+        accept {
+            i++
+            true
+        }
+        return i
+    }
+
     fun accept(visitor: (XMLEntity) -> Boolean) {
         root.accept(visitor)
     }

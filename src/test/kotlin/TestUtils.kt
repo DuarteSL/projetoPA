@@ -85,6 +85,17 @@ class TestUtils {
     }
 
     @Test
+    fun testFindEntities() {
+        val a = doc.findEntities("entity2")
+        val b = doc.findEntities("entity3")
+        val c = doc.findEntities("root")
+
+        assertEquals(listOf(entity2,entity2test),a)
+        assertEquals(listOf(entity3),b)
+        assertEquals(listOf(doc.getRoot()),c)
+    }
+
+    @Test
     fun testFilterByXPath() {
         val pa = ParentEntity("entity1")
         val si = SimpleEntity("entity2")
@@ -94,11 +105,20 @@ class TestUtils {
 
         val xpath1 = "root/entity1/entity2"
         val xpath2 = "root/entity3"
+        val xpath3 = "entity2"
+        val xpath4 = "entity1/entity2"
+        val xpath5 = "testempty"
 
         val a = doc.filterByXPath(xpath1)
         val b = doc.filterByXPath(xpath2)
+        val c = doc.filterByXPath(xpath3)
+        val d = doc.filterByXPath(xpath4)
+        val e = doc.filterByXPath(xpath5)
 
         assertEquals(listOf(entity2,si), a)
         assertEquals(listOf(entity3), b)
+        assertEquals(listOf(entity2, entity2test, si), c)
+        assertEquals(listOf(entity2, si), d)
+        assertEquals(emptyList<XMLEntity>(), e)
     }
 }
