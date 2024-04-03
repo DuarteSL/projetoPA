@@ -6,7 +6,7 @@ fun XMLDocument.toText(): String {
 }
 
 fun XMLEntity.toText(): String {
-    var s = StringBuilder()
+    val s = StringBuilder()
     if (this is ParentEntity) {
         if (getChildren().isNotEmpty()) {
             s.append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}>\n")
