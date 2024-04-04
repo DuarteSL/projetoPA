@@ -13,6 +13,7 @@ fun XMLDocument.toText(): String {
 /**
  * Converts the XML entity to its textual visualization.
  *
+ * @throws IllegalStateException in case there is no textual visualization defined for that type of [XMLEntity]
  * @return The textual visualization of the XML entity as a [String].
  */
 fun XMLEntity.toText(): String {

@@ -134,6 +134,7 @@ abstract class XMLEntity(
     /**
      * Adds an attribute to the entity.
      *
+     * @throws IllegalStateException in case an [XMLAttribute] with the same name of the attribute to add already exists
      * @param attributeToAdd The attribute to add.
      */
     fun addAttribute(attributeToAdd: XMLAttribute) {
