@@ -32,11 +32,11 @@ class TestVisualization {
 
     @Test
     fun testDocumentToText() {
-        val a = XMLDocument(ParentEntity("root"))
+        val a = XMLDocument("root")
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<root/>\n",a.toText())
 
-        val b = XMLDocument(ParentEntity("root"), 2.0, "UTF-16")
+        val b = XMLDocument("root", 2.0, "UTF-16")
         assertEquals("<?xml version=\"2.0\" encoding=\"UTF-16\"?>\n" +
                 "<root/>\n",b.toText())
     }
@@ -44,7 +44,7 @@ class TestVisualization {
 
     @Test
     fun testFullExample() {
-        val document = XMLDocument(ParentEntity("plano"))
+        val document = XMLDocument("plano")
         val curso = SimpleEntity("curso")
         curso.setText("Mestrado em Engenharia Informática")
         document.getRoot().addChild(curso)

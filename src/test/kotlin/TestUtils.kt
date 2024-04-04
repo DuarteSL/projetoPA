@@ -4,7 +4,7 @@ import javax.swing.text.html.parser.Entity
 
 class TestUtils {
 
-    val doc = XMLDocument(ParentEntity("root"))
+    val doc = XMLDocument("root")
     val entity1 = ParentEntity("entity1")
     val entity2 = SimpleEntity("entity2")
     val entity2test = SimpleEntity("entity2")

@@ -1,20 +1,50 @@
+/**
+ * Represents an XML document.
+ *
+ * @property rootName The name of the root entity of the XML document.
+ * @property version The version of the XML document. Default is 1.0.
+ * @property encoding The encoding of the XML document. Default is "UTF-8".
+ * @property root The root entity of the XML document.
+ * @constructor Creates an XML document with the specified [version] and [encoding]. Defines the [root] of the XML document based of the specified [rootName].
+ */
 class XMLDocument(
-    private val root: ParentEntity,
+    private val rootName: String,
     private val version: Double = 1.0,
     private val encoding: String = "UTF-8"
 ) {
+    private val root = ParentEntity(rootName)
+    /**
+     * Returns the root entity of the XML document.
+     *
+     * @return The root entity of the XML document.
+     */
     fun getRoot(): ParentEntity {
         return root
     }
 
+    /**
+     * Returns the version of the XML document.
+     *
+     * @return The version of the XML document.
+     */
     fun getVersion(): Double {
         return version
     }
 
+    /**
+     * Returns the encoding of the XML document.
+     *
+     * @return The encoding of the XML document.
+     */
     fun getEncoding(): String {
         return encoding
     }
 
+    /**
+     * Returns the total number of entities in the XML document.
+     *
+     * @return The total number of entities in the XML document.
+     */
     fun getEntityCount(): Int {
         var i = 0
         accept {
@@ -24,18 +54,35 @@ class XMLDocument(
         return i
     }
 
+    /**
+     * Accepts a visitor function to traverse the entities of the XML document.
+     *
+     * @param visitor A function that takes an [XMLEntity] and returns a boolean indicating whether to continue visiting its children.
+     */
     fun accept(visitor: (XMLEntity) -> Boolean) {
         root.accept(visitor)
     }
 }
 
-abstract class XMLEntity (
+/**
+ * Represents an XML entity.
+ *
+ * @property name The name of the XML entity.
+ * @property attributes The list of attributes of the XML entity
+ * @property parent The [ParentEntity] of this entity
+ * @constructor Creates an XML entity with the specified [name].
+ */
+abstract class XMLEntity(
     private var name: String
-)
-{
+) {
     private val attributes: MutableList<XMLAttribute> = mutableListOf()
     private var parent: ParentEntity? = null
 
+    /**
+     * Returns the depth of the entity in the XML hierarchy.
+     *
+     * @return The depth of the entity in the XML hierarchy.
+     */
     val depth: Int
         get() {
             return if (parent == null)
@@ -44,30 +91,51 @@ abstract class XMLEntity (
                 1 + parent!!.depth
         }
 
+    /**
+     * Returns the name of the entity.
+     *
+     * @return The name of the entity.
+     */
     fun getName(): String {
         return name
     }
 
+    /**
+     * Sets the name of the entity.
+     *
+     * @param name The new name for the entity.
+     */
     fun setName(name: String) {
         this.name = name
     }
 
-    internal fun getParent() : ParentEntity? {
+    /**
+     * Returns the parent entity of the current entity.
+     *
+     * @return The parent entity of the current entity.
+     */
+    fun getParent(): ParentEntity? {
         return parent
     }
 
-    internal fun setParent(parent: ParentEntity) {
+    internal fun setParent(parent: ParentEntity?) {
         this.parent = parent
     }
 
-    fun getParentCopy(): ParentEntity? {
-        return parent?.copy()
-    }
-
-    internal fun getAttributes() : List<XMLAttribute> {
+    /**
+     * Returns the attributes of the entity.
+     *
+     * @return The attributes of the entity.
+     */
+    fun getAttributes(): List<XMLAttribute> {
         return attributes
     }
 
+    /**
+     * Adds an attribute to the entity.
+     *
+     * @param attributeToAdd The attribute to add.
+     */
     fun addAttribute(attributeToAdd: XMLAttribute) {
         if (attributes.isEmpty()) {
             attributes.add(attributeToAdd)
@@ -80,10 +148,23 @@ abstract class XMLEntity (
         }
     }
 
-    fun removeAttribute(attributeToRemove: XMLAttribute) {
-        attributes.remove(attributeToRemove)
+    /**
+     * Removes an attribute from the entity.
+     *
+     * @param attributeToRemove The attribute to remove.
+     * @return `true` if the attribute was successfully removed; `false` if it was not present in the [attributes] list
+     */
+    fun removeAttribute(attributeToRemove: XMLAttribute): Boolean {
+        return attributes.remove(attributeToRemove)
     }
 
+    /**
+     * Changes the name or value of an attribute.
+     *
+     * @param attributeToChange The attribute to change.
+     * @param name The new name for the attribute, if any.
+     * @param value The new value for the attribute, if any.
+     */
     fun changeAttribute(attributeToChange: XMLAttribute, name: String? = null, value: String? = null) {
         attributes.forEach {
             if (it == attributeToChange) {
@@ -93,40 +174,64 @@ abstract class XMLEntity (
         }
     }
 
+    /**
+     * Accepts a visitor function for traversing the XML hierarchy.
+     *
+     * @param visitor A function that takes an [XMLEntity] and returns a boolean indicating whether to continue visiting its children.
+     */
     open fun accept(visitor: (XMLEntity) -> Boolean) {
         visitor(this)
     }
 }
 
+/**
+ * Represents a parent entity in XML, which can have child entities.
+ *
+ * @property name The name of the parent entity.
+ * @property children The list of children entities of the [ParentEntity]
+ * @constructor Creates a parent entity with the specified [name].
+ */
 data class ParentEntity(
     private var name: String
-): XMLEntity(name) {
+) : XMLEntity(name) {
     private val children: MutableList<XMLEntity> = mutableListOf()
 
-    internal fun getChildren(): List<XMLEntity> {
+    /**
+     * Returns the children entities of this parent entity.
+     *
+     * @return The children entities of this parent entity.
+     */
+    fun getChildren(): List<XMLEntity> {
         return children
     }
 
-    fun getChildrenCopy(): List<XMLEntity> {
-        val list = mutableListOf<XMLEntity>()
-        children.forEach {
-            if (it is ParentEntity) list.add(it.copy())
-            if (it is SimpleEntity) list.add(it.copy())
-        }
-        return list
-    }
-
+    /**
+     * Adds a child entity to this parent entity.
+     *
+     * @param entityToAdd The entity to add as a child.
+     */
     fun addChild(entityToAdd: XMLEntity) {
         children.add(entityToAdd)
         entityToAdd.setParent(this)
     }
 
-    fun removeChild(entityToRemove: XMLEntity) {
-        children.remove(entityToRemove)
+    /**
+     * Removes a child entity from this parent entity.
+     *
+     * @param entityToRemove The entity to remove from children.
+     * @return `true` if the entity was successfully removed; `false` if it was not present in the [children] list
+     */
+    fun removeChild(entityToRemove: XMLEntity): Boolean {
+        return children.remove(entityToRemove)
     }
 
+    /**
+     * Accepts a visitor function for traversing the XML hierarchy.
+     *
+     * @param visitor A function that takes an [XMLEntity] and returns a boolean indicating whether to continue visiting its children.
+     */
     override fun accept(visitor: (XMLEntity) -> Boolean) {
-        if(visitor(this)) {
+        if (visitor(this)) {
             children.forEach {
                 it.accept(visitor)
             }
@@ -134,57 +239,82 @@ data class ParentEntity(
     }
 }
 
+/**
+ * Represents a simple XML entity that contains only text.
+ *
+ * @property name The name of the simple entity.
+ * @property text The text content of the simple entity
+ * @constructor Creates a simple entity with the specified [name].
+ */
 data class SimpleEntity(
     private var name: String
-): XMLEntity(name) {
+) : XMLEntity(name) {
     private var text: String = ""
 
+    /**
+     * Returns the text content of the simple entity.
+     *
+     * @return The text content of the simple entity.
+     */
     fun getText(): String {
         return text
     }
 
+    /**
+     * Sets the text content of the simple entity.
+     *
+     * @param name The text to set.
+     */
     fun setText(name: String) {
         this.text = name
     }
 }
 
+/**
+ * Represents an attribute of an XML entity.
+ *
+ * @property name The name of the attribute.
+ * @property value The value of the attribute.
+ * @constructor Creates an XML attribute with the specified [name] and [value].
+ */
 class XMLAttribute(
     private var name: String,
     private var value: String,
 ) {
+    /**
+     * Returns the name of the attribute.
+     *
+     * @return The name of the attribute.
+     */
     fun getName(): String {
         return name
     }
 
+    /**
+     * Sets the name of the attribute.
+     *
+     * @param newName The new name for the attribute.
+     */
     fun setName(newName: String) {
         name = newName
     }
 
+    /**
+     * Returns the value of the attribute.
+     *
+     * @return The value of the attribute.
+     */
     fun getValue(): String {
         return value
     }
 
+    /**
+     * Sets the value of the attribute.
+     *
+     * @param newValue The new value for the attribute.
+     */
     fun setValue(newValue: String) {
         value = newValue
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

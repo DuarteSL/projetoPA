@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test
 
 class Test {
 
-    val doc = XMLDocument(ParentEntity("root"))
+    val doc = XMLDocument("root")
     val entity1 = ParentEntity("entity1")
     val entity2 = SimpleEntity("entity2")
     val entity3 = SimpleEntity("entity3")
@@ -83,27 +83,15 @@ class Test {
     }
 
     @Test
-    fun testGetParentCopy() {
-        assertEquals("entity1", entity2.getParentCopy()!!.getName())
-        assertEquals("root", entity1.getParentCopy()!!.getName())
+    fun testGetParent() {
+        assertEquals("entity1", entity2.getParent()!!.getName())
+        assertEquals("root", entity1.getParent()!!.getName())
     }
 
     @Test
-    fun testGetParentCopyImmutability() {
-        val initial = doc.toText()
-
-        val a = entity1.getParentCopy()
-        a!!.setName("novonome")
-
-        val end = doc.toText()
-
-        assertEquals(initial, end)
-    }
-
-    @Test
-    fun testGetChildrenCopy() {
-        val a = entity1.getChildrenCopy()
-        val b = doc.getRoot().getChildrenCopy()
+    fun testGetChildren() {
+        val a = entity1.getChildren()
+        val b = doc.getRoot().getChildren()
 
         val case1 = a.joinToString(",") { it.getName() }
         val case2 = b.joinToString(",") { it.getName() }
@@ -111,19 +99,4 @@ class Test {
         assertEquals("entity2",case1)
         assertEquals("entity1,entity3",case2)
     }
-
-    @Test
-    fun testGetChildrenCopyImmutability() {
-        val initial = doc.toText()
-
-        val a = entity1.getChildrenCopy()
-        a.forEach {
-            it.setName("novonome")
-        }
-
-        val end = doc.toText()
-
-        assertEquals(initial, end)
-    }
-
 }

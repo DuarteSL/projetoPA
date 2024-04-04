@@ -4,7 +4,7 @@ import org.junit.jupiter.api.assertThrows
 
 class TestAddFunctions {
 
-    val doc = XMLDocument(ParentEntity("root"))
+    val doc = XMLDocument("root")
 
     @Test
     fun testAddChild() {

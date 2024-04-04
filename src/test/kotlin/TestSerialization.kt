@@ -6,7 +6,7 @@ class TestSerialization {
 
     @Test
     fun testDocumentToFile() {
-        val document = XMLDocument(ParentEntity("plano"))
+        val document = XMLDocument("plano")
         val curso = SimpleEntity("curso")
         curso.setText("Mestrado em Engenharia Informática")
         document.getRoot().addChild(curso)
