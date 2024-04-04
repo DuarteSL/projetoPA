@@ -6,25 +6,35 @@ fun XMLDocument.toText(): String {
 }
 
 fun XMLEntity.toText(): String {
-    val s = StringBuilder()
-    if (this is ParentEntity) {
+    return when(this) {
+        is ParentEntity -> this.toText()
+        is SimpleEntity -> this.toText()
+        else -> error("There is no visualization defined for that type of entity")
+    }
+}
+
+fun ParentEntity.toText(): String {
+    return buildString {
         if (getChildren().isNotEmpty()) {
-            s.append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}>\n")
+            append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}>\n")
             getChildren().forEach {
-                s.append(it.toText())
+                append(it.toText())
             }
-            s.append("${"\t".repeat(depth - 1)}</${getName()}>\n")
+            append("${"\t".repeat(depth - 1)}</${getName()}>\n")
         }  else {
-            s.append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}/>\n")
-        }
-    } else if (this is SimpleEntity) {
-        if (getText().isEmpty()) {
-            s.append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}/>\n")
-        } else {
-            s.append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}>${getText()}</${getName()}>\n")
+            append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}/>\n")
         }
     }
-    return s.toString()
+}
+
+fun SimpleEntity.toText(): String {
+    return buildString {
+        if (getText().isEmpty()) {
+            append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}/>\n")
+        } else {
+            append("${"\t".repeat(depth - 1)}<${getName()}${getAttributes().joinToString("") { it.toText() }}>${getText()}</${getName()}>\n")
+        }
+    }
 }
 
 fun XMLAttribute.toText(): String {
