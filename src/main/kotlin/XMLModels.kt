@@ -217,13 +217,18 @@ data class ParentEntity(
     }
 
     /**
-     * Removes a child entity from this parent entity.
+     * Removes a child entity from the parent entity, and sets it parent as `null`.
      *
      * @param entityToRemove The entity to remove from children.
      * @return `true` if the entity was successfully removed; `false` if it was not present in the [children] list
      */
     fun removeChild(entityToRemove: XMLEntity): Boolean {
-        return children.remove(entityToRemove)
+        if (children.remove(entityToRemove)) {
+            entityToRemove.setParent(null)
+            return true
+        }
+        return false
+
     }
 
     /**
