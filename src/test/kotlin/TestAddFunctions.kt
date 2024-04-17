@@ -25,7 +25,7 @@ class TestAddFunctions {
         val a = XMLAttribute("testeName", "testeValue1")
         val b = XMLAttribute("testeName", "testeValue2")
         doc.getRoot().addAttribute(a)
-        org.junit.jupiter.api.assertThrows<IllegalStateException> {
+        assertThrows<IllegalStateException> {
             doc.getRoot().addAttribute(b)
         }
         assertEquals(1, doc.getRoot().getAttributes().size)

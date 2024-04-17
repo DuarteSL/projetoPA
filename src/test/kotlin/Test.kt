@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class Test {
 
@@ -54,32 +55,38 @@ class Test {
 
     @Test
     fun testChangeAttribute() {
-        entity1.changeAttribute(attribute2, "testeName")
+        entity1.changeAttribute(attribute1, "testeName")
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<root>\n" +
-                "\t<entity1 attribute1=\"1\">\n" +
+                "\t<entity1 testeName=\"1\">\n" +
                 "\t\t<entity2 attribute2=\"2\"/>\n" +
                 "\t</entity1>\n" +
                 "\t<entity3/>\n" +
                 "</root>\n",doc.toText())
 
-        entity1.changeAttribute(attribute2, value="testeValue")
+        entity1.changeAttribute(attribute1, value="testeValue")
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<root>\n" +
-                "\t<entity1 attribute1=\"1\">\n" +
+                "\t<entity1 testeName=\"testeValue\">\n" +
                 "\t\t<entity2 attribute2=\"2\"/>\n" +
                 "\t</entity1>\n" +
                 "\t<entity3/>\n" +
                 "</root>\n",doc.toText())
 
-        entity1.changeAttribute(attribute2, "testeChangeName", "testChangeValue")
+        entity1.changeAttribute(attribute1, "testChangeName", "testChangeValue")
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<root>\n" +
-                "\t<entity1 attribute1=\"1\">\n" +
+                "\t<entity1 testChangeName=\"testChangeValue\">\n" +
                 "\t\t<entity2 attribute2=\"2\"/>\n" +
                 "\t</entity1>\n" +
                 "\t<entity3/>\n" +
                 "</root>\n",doc.toText())
+
+        val testRepeat = XMLAttribute("testRepeat","val")
+        entity1.addAttribute(testRepeat)
+        assertThrows<IllegalStateException> {
+            entity1.changeAttribute(testRepeat, "testChangeName")
+        }
     }
 
     @Test

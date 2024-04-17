@@ -6,12 +6,19 @@
  * @property encoding The encoding of the XML document. Default is "UTF-8".
  * @property root The root entity of the XML document.
  * @constructor Creates an XML document with the specified [version] and [encoding]. Defines the [root] of the XML document based of the specified [rootName].
+ * @throws IllegalStateException in case the given [rootName] is an empty String.
  */
 class XMLDocument(
     private val rootName: String,
     private val version: Double = 1.0,
     private val encoding: String = "UTF-8"
 ) {
+    init {
+        if (rootName.isEmpty()) {
+            error("The entity name cannot be empty")
+        }
+    }
+
     private val root = ParentEntity(rootName)
     /**
      * Returns the root entity of the XML document.
@@ -71,12 +78,20 @@ class XMLDocument(
  * @property attributes The list of attributes of the XML entity
  * @property parent The [ParentEntity] of this entity
  * @constructor Creates an XML entity with the specified [name].
+ * @throws IllegalStateException in case the XML entity [name] is an empty [String].
+ *
  */
 abstract class XMLEntity(
     private var name: String
 ) {
     private val attributes: MutableList<XMLAttribute> = mutableListOf()
     private var parent: ParentEntity? = null
+
+    init {
+        if (name.isEmpty()) {
+            error("The entity name cannot be empty")
+        }
+    }
 
     /**
      * Returns the depth of the entity in the XML hierarchy.
@@ -104,8 +119,12 @@ abstract class XMLEntity(
      * Sets the name of the entity.
      *
      * @param name The new name for the entity.
+     * @throws IllegalStateException in case the given [name] is an empty String.
      */
     fun setName(name: String) {
+        if (name.isEmpty()) {
+            error("The entity name cannot be changed to empty")
+        }
         this.name = name
     }
 
@@ -165,8 +184,12 @@ abstract class XMLEntity(
      * @param attributeToChange The attribute to change.
      * @param name The new name for the attribute, if any.
      * @param value The new value for the attribute, if any.
+     * @throws IllegalStateException in case it already exists an attribute with the provided [name]
      */
     fun changeAttribute(attributeToChange: XMLAttribute, name: String? = null, value: String? = null) {
+        if (name != null) {
+            if (attributes.joinToString { it.getName() }.contains(name)) error("It already exists an attriute with the name provided")
+        }
         attributes.forEach {
             if (it == attributeToChange) {
                 if (name != null) it.setName(name)
@@ -282,11 +305,17 @@ data class SimpleEntity(
  * @property name The name of the attribute.
  * @property value The value of the attribute.
  * @constructor Creates an XML attribute with the specified [name] and [value].
+ * @throws IllegalStateException in case the given [name] is an empty String.
  */
 class XMLAttribute(
     private var name: String,
     private var value: String,
 ) {
+    init {
+        if (name.isEmpty()) {
+            error("The attribute name cannot be empty")
+        }
+    }
     /**
      * Returns the name of the attribute.
      *
@@ -299,10 +328,14 @@ class XMLAttribute(
     /**
      * Sets the name of the attribute.
      *
-     * @param newName The new name for the attribute.
+     * @param name The new name for the attribute.
+     * @throws IllegalStateException in case the given [name] is an empty String.
      */
-    fun setName(newName: String) {
-        name = newName
+    fun setName(name: String) {
+        if (name.isEmpty()) {
+            error("The attribute name cannot be changed to empty")
+        }
+        this.name = name
     }
 
     /**
@@ -317,10 +350,10 @@ class XMLAttribute(
     /**
      * Sets the value of the attribute.
      *
-     * @param newValue The new value for the attribute.
+     * @param value The new value for the attribute.
      */
-    fun setValue(newValue: String) {
-        value = newValue
+    fun setValue(value: String) {
+        this.value = value
     }
 
 }

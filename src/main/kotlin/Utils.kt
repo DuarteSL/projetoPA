@@ -5,6 +5,7 @@
  * @param entityName The name of the XML entity to add attributes to.
  * @param attributeName The name of the attribute to add.
  * @param attributeValue The value of the attribute to add.
+ * @throws IllegalStateException in case the given [attributeName] is an empty String or in case the given [attributeName] already exists in one of the XML entities.
  */
 fun XMLDocument.addAttributes(entityName: String, attributeName: String, attributeValue: String) {
     accept {
@@ -19,6 +20,7 @@ fun XMLDocument.addAttributes(entityName: String, attributeName: String, attribu
  * @receiver [XMLDocument]
  * @param entityName The current name of the XML entity.
  * @param newName The new name for the XML entity.
+ * @throws IllegalStateException in case the given [newName] is an empty String.
  */
 fun XMLDocument.changeEntityName(entityName: String, newName: String) {
     accept {
@@ -34,12 +36,13 @@ fun XMLDocument.changeEntityName(entityName: String, newName: String) {
  * @param entityName The name of the XML entity containing the attribute.
  * @param attributeName The current name of the attribute.
  * @param newName The new name for the attribute.
+ * @throws IllegalStateException in case the given [newName] already exists in one of the XML entities.
  */
 fun XMLDocument.changeAttributeName(entityName: String, attributeName: String, newName: String) {
     accept {
         if (it.getName() == entityName) {
             it.getAttributes().forEach { a ->
-                if (a.getName() == attributeName) a.setName(newName)
+                if (a.getName() == attributeName) it.changeAttribute(a,newName)
             }
         }
         true
