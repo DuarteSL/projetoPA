@@ -9,12 +9,15 @@ class TestObjectToXML {
         @XmlType("attribute")
         @XmlId("nome")
         val name: String,
+
         @XmlType("attribute")
         @XmlId("peso")
+        @XmlString(AddPercentage::class)
         val weight: Int
     )
 
     @XmlId("fuc")
+    @XmlAdapter(FUCAdapter::class)
     class FUC(
         @XmlType("attribute")
         val codigo: String,

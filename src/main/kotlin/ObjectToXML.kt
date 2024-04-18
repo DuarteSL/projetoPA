@@ -1,6 +1,5 @@
 import kotlin.reflect.*
 import kotlin.reflect.full.*
-import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType.Primitive
 
 @Target(AnnotationTarget.PROPERTY, AnnotationTarget.CLASS)
 annotation class XmlId(val name: String)
@@ -9,39 +8,51 @@ annotation class XmlId(val name: String)
 annotation class XmlType(val type: String)
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class Exclude()
+annotation class Exclude
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class XmlString(val stringTransformer : KClass<out Any>) // tornar numa interface StringTransformer
+annotation class XmlString(val stringTransformer : KClass<out StringTransformer>) // tornar numa interface StringTransformer
 
 @Target(AnnotationTarget.CLASS)
-annotation class XmlAdapter(val adapter : KClass<out Any>) // tornar numa interface adapter
-
+annotation class XmlAdapter(val xmlAdapter : KClass<out Adapter>) // tornar numa interface adapter
 
 fun objectToXMLInstance(obj: Any): XMLEntity {
     val clazz = obj::class
 
     val classXmlId = clazz.findAnnotation<XmlId>()?.name ?: (clazz.simpleName + "")
+    var properties = clazz.declaredMemberProperties
 
     val classEntity = ParentEntity(classXmlId)
 
     /*
-    if (clazz.findAnnotation<XmlAdapter>() != null) {
+    var result: Any? = null
 
+    if (clazz.hasAnnotation<XmlAdapter>()) {
+        val xmlAdapter = clazz.findAnnotation<XmlAdapter>()!!.xmlAdapter
+        val adapterInstance = xmlAdapter.objectInstance ?: xmlAdapter.createInstance()
+        result = adapterInstance.adapt(clazz)
+    }
+
+    if (result is Collection<*>) {
+        properties = result as Collection<KProperty1<out Any, *>>
     }
     */
 
-    clazz.declaredMemberProperties.forEach { property ->
+    properties.forEach { property ->
         if (!property.hasAnnotation<Exclude>()) {
             val propertyXmlId = property.findAnnotation<XmlId>()?.name ?: property.name
 
             val value = property.call(obj)
 
-            /*
-            if (clazz.findAnnotation<XmlString>() != null) {
+            var transformedValue = value.toString()
 
+
+            if (property.hasAnnotation<XmlString>()) {
+                val stringTransformer = property.findAnnotation<XmlString>()!!.stringTransformer
+                val transformerInstance = stringTransformer.objectInstance ?: stringTransformer.createInstance()
+                transformedValue = transformerInstance.transform(value.toString())
             }
-            */
+
 
             val type = property.findAnnotation<XmlType>()?.type
 
@@ -55,7 +66,7 @@ fun objectToXMLInstance(obj: Any): XMLEntity {
 
                 } else if (isPrimitive(value)) {
                     val s = SimpleEntity(propertyXmlId)
-                    s.setText(value.toString())
+                    s.setText(transformedValue)
                     classEntity.addChild(s)
 
                 } else {
@@ -64,12 +75,12 @@ fun objectToXMLInstance(obj: Any): XMLEntity {
 
 
             } else if (type == "attribute") {
-                val a = XMLAttribute(propertyXmlId, value.toString())
+                val a = XMLAttribute(propertyXmlId, transformedValue)
                 classEntity.addAttribute(a)
 
 
             } else {
-                println("xd")
+                error("Use the annotation XmlType on all the class attributes with either \"attribute\" or \"entity\".")
             }
 
         }
@@ -89,4 +100,33 @@ fun isPrimitive(value: Any?): Boolean {
             value is Short ||
             value is Byte ||
             value is Char
+}
+
+interface StringTransformer {
+    fun transform(value: String): String
+}
+
+class AddPercentage : StringTransformer {
+    override fun transform(value: String): String {
+        return "$value%"
+    }
+}
+
+interface Adapter {
+    fun adapt(clazz: KClass<*>): Any
+}
+
+class FUCAdapter : Adapter {
+    override fun adapt(clazz: KClass<*>): Any {
+        return clazz.declaredMemberProperties.sortedBy { getOrder(it) }
+    }
+
+    private fun getOrder(property: KProperty<*>): Int {
+        val map = mapOf(
+            "nome" to 1,
+            "ects" to 2,
+            "avaliacao" to 3,
+        )
+        return map[property.name] ?: Int.MAX_VALUE
+    }
 }
