@@ -41,6 +41,13 @@ class TestObjectToXML {
         )
 
         val a = objectToXMLInstance(f)
-        println(a.toText())
+        assertEquals("<fuc codigo=\"M4310\">\n" +
+                "\t<nome>Programação Avançada</nome>\n" +
+                "\t<ects>6.0</ects>\n" +
+                "\t<avaliacao>\n" +
+                "\t\t<componente nome=\"Quizzes\" peso=\"20%\"/>\n" +
+                "\t\t<componente nome=\"Projeto\" peso=\"80%\"/>\n" +
+                "\t</avaliacao>\n" +
+                "</fuc>\n", a.toText())
     }
 }

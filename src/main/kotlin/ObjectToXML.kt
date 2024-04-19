@@ -20,25 +20,10 @@ fun objectToXMLInstance(obj: Any): XMLEntity {
     val clazz = obj::class
 
     val classXmlId = clazz.findAnnotation<XmlId>()?.name ?: (clazz.simpleName + "")
-    var properties = clazz.declaredMemberProperties
 
-    val classEntity = ParentEntity(classXmlId)
+    var classEntity = ParentEntity(classXmlId)
 
-    /*
-    var result: Any? = null
-
-    if (clazz.hasAnnotation<XmlAdapter>()) {
-        val xmlAdapter = clazz.findAnnotation<XmlAdapter>()!!.xmlAdapter
-        val adapterInstance = xmlAdapter.objectInstance ?: xmlAdapter.createInstance()
-        result = adapterInstance.adapt(clazz)
-    }
-
-    if (result is Collection<*>) {
-        properties = result as Collection<KProperty1<out Any, *>>
-    }
-    */
-
-    properties.forEach { property ->
+    clazz.declaredMemberProperties.forEach { property ->
         if (!property.hasAnnotation<Exclude>()) {
             val propertyXmlId = property.findAnnotation<XmlId>()?.name ?: property.name
 
@@ -86,6 +71,11 @@ fun objectToXMLInstance(obj: Any): XMLEntity {
         }
     }
 
+    if (clazz.hasAnnotation<XmlAdapter>()) {
+        val xmlAdapter = clazz.findAnnotation<XmlAdapter>()!!.xmlAdapter
+        val adapterInstance = xmlAdapter.objectInstance ?: xmlAdapter.createInstance()
+        classEntity = adapterInstance.adapt(classEntity)
+    }
 
     return classEntity
 }
@@ -113,20 +103,25 @@ class AddPercentage : StringTransformer {
 }
 
 interface Adapter {
-    fun adapt(clazz: KClass<*>): Any
+    fun adapt(entity: ParentEntity): ParentEntity
 }
 
 class FUCAdapter : Adapter {
-    override fun adapt(clazz: KClass<*>): Any {
-        return clazz.declaredMemberProperties.sortedBy { getOrder(it) }
+    override fun adapt(entity: ParentEntity): ParentEntity {
+        val children = entity.getChildren()
+        val sorted = children.sortedBy { getOrder(it) }
+        children.removeAll { true }
+        children.addAll(sorted)
+
+        return entity
     }
 
-    private fun getOrder(property: KProperty<*>): Int {
+    private fun getOrder(childEntity: XMLEntity): Int {
         val map = mapOf(
             "nome" to 1,
             "ects" to 2,
             "avaliacao" to 3,
         )
-        return map[property.name] ?: Int.MAX_VALUE
+        return map[childEntity.getName()] ?: Int.MAX_VALUE
     }
 }

@@ -146,7 +146,7 @@ abstract class XMLEntity(
      *
      * @return The attributes of the entity.
      */
-    fun getAttributes(): List<XMLAttribute> {
+    fun getAttributes(): MutableList<XMLAttribute> {
         return attributes
     }
 
@@ -225,7 +225,7 @@ data class ParentEntity(
      *
      * @return The children entities of this parent entity.
      */
-    fun getChildren(): List<XMLEntity> {
+    fun getChildren(): MutableList<XMLEntity> {
         return children
     }
 
