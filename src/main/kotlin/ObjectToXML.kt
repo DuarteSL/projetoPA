@@ -96,32 +96,6 @@ interface StringTransformer {
     fun transform(value: String): String
 }
 
-class AddPercentage : StringTransformer {
-    override fun transform(value: String): String {
-        return "$value%"
-    }
-}
-
 interface Adapter {
     fun adapt(entity: ParentEntity): ParentEntity
-}
-
-class FUCAdapter : Adapter {
-    override fun adapt(entity: ParentEntity): ParentEntity {
-        val children = entity.getChildren()
-        val sorted = children.sortedBy { getOrder(it) }
-        children.removeAll { true }
-        children.addAll(sorted)
-
-        return entity
-    }
-
-    private fun getOrder(childEntity: XMLEntity): Int {
-        val map = mapOf(
-            "nome" to 1,
-            "ects" to 2,
-            "avaliacao" to 3,
-        )
-        return map[childEntity.getName()] ?: Int.MAX_VALUE
-    }
 }
