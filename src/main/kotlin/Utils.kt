@@ -20,7 +20,7 @@ fun XMLDocument.addAttributes(entityName: String, attributeName: String, attribu
  * @receiver [XMLDocument]
  * @param entityName The current name of the XML entity.
  * @param newName The new name for the XML entity.
- * @throws IllegalStateException in case the given [newName] is an empty String.
+ * @throws IllegalStateException in case the given [newName] doesn't meet the requirementes for an XML entity name.
  */
 fun XMLDocument.changeEntityName(entityName: String, newName: String) {
     accept {

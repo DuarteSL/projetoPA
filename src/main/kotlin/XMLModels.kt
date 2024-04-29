@@ -6,18 +6,13 @@
  * @property encoding The encoding of the XML document. Default is "UTF-8".
  * @property root The root entity of the XML document.
  * @constructor Creates an XML document with the specified [version] and [encoding]. Defines the [root] of the XML document based of the specified [rootName].
- * @throws IllegalStateException in case the given [rootName] is an empty String.
+ * @throws IllegalStateException in case the given [rootName] doesn't meet the requirementes for an XML entity name.
  */
 class XMLDocument(
     private val rootName: String,
     private val version: Double = 1.0,
     private val encoding: String = "UTF-8"
 ) {
-    init {
-        if (rootName.isEmpty()) {
-            error("The entity name cannot be empty")
-        }
-    }
 
     private val root = ParentEntity(rootName)
     /**
@@ -78,7 +73,7 @@ class XMLDocument(
  * @property attributes The list of attributes of the XML entity
  * @property parent The [ParentEntity] of this entity
  * @constructor Creates an XML entity with the specified [name].
- * @throws IllegalStateException in case the XML entity [name] is an empty [String].
+ * @throws IllegalStateException in case the XML entity [name] doesn't meet the requirementes for an XML entity name.
  *
  */
 abstract class XMLEntity(
@@ -88,9 +83,7 @@ abstract class XMLEntity(
     private var parent: ParentEntity? = null
 
     init {
-        if (name.isEmpty()) {
-            error("The entity name cannot be empty")
-        }
+        validateName()
     }
 
     /**
@@ -126,6 +119,12 @@ abstract class XMLEntity(
             error("The entity name cannot be changed to empty")
         }
         this.name = name
+    }
+
+    private fun validateName() {
+        val regex = Regex("^[A-Za-z_][A-Za-z0-9_.-]*$")
+        if (!name.matches(regex))
+            error("The provided entity name does meet the requirements for a XML Entity name. Expected regex pattern: ${regex.pattern}")
     }
 
     /**

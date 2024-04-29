@@ -7,6 +7,16 @@ class TestAddFunctions {
     val doc = XMLDocument("root")
 
     @Test
+    fun testValidName() {
+        ParentEntity("testvalid1")
+        ParentEntity("_testvalid2")
+        assertThrows<IllegalStateException> {
+            XMLDocument("1")
+            ParentEntity("")
+        }
+    }
+
+    @Test
     fun testAddChild() {
         val a = ParentEntity("Teste")
         doc.getRoot().addChild(a)

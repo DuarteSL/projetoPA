@@ -11,10 +11,10 @@ annotation class XmlType(val type: String)
 annotation class Exclude
 
 @Target(AnnotationTarget.PROPERTY)
-annotation class XmlString(val stringTransformer : KClass<out StringTransformer>) // tornar numa interface StringTransformer
+annotation class XmlString(val stringTransformer : KClass<out StringTransformer>)
 
 @Target(AnnotationTarget.CLASS)
-annotation class XmlAdapter(val xmlAdapter : KClass<out Adapter>) // tornar numa interface adapter
+annotation class XmlAdapter(val xmlAdapter : KClass<out Adapter>)
 
 fun objectToXMLInstance(obj: Any): XMLEntity {
     val clazz = obj::class
