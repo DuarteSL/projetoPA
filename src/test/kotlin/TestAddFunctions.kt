@@ -10,6 +10,7 @@ class TestAddFunctions {
     fun testValidName() {
         ParentEntity("testvalid1")
         ParentEntity("_testvalid2")
+        XMLDocument("root")
         assertThrows<IllegalStateException> {
             XMLDocument("1")
             ParentEntity("")

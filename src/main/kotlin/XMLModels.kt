@@ -253,6 +253,13 @@ data class ParentEntity(
 
     }
 
+    operator fun div(childName: String): ParentEntity =
+        children.find { it.getName() == childName } as ParentEntity
+
+    operator fun get(childName: String): SimpleEntity =
+        children.find { it.getName() == childName } as SimpleEntity
+
+
     /**
      * Accepts a visitor function for traversing the XML hierarchy.
      *
