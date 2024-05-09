@@ -14,6 +14,7 @@ class TesteDslXML {
                     }
                 }
             }
+            simpleentity("another") text "test"
         }
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<root>\n" +
@@ -24,6 +25,7 @@ class TesteDslXML {
                 "\t\t\t</help>\n" +
                 "\t\t</beatles>\n" +
                 "\t</artists>\n" +
+                "\t<another>test</another>\n" +
                 "</root>\n", doc.toText())
     }
 

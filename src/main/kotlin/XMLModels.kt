@@ -253,9 +253,21 @@ data class ParentEntity(
 
     }
 
+    /**
+     * Retrieves a child entity by its name and returns it as a [ParentEntity].
+     *
+     * @param childName The name of the child entity to retrieve.
+     * @return The child entity with the specified name, cast as a [ParentEntity]. If no child with the specified name is found, null is returned.
+     */
     operator fun div(childName: String): ParentEntity =
         children.find { it.getName() == childName } as ParentEntity
 
+    /**
+     * Retrieves a child entity by its name and returns it as a [SimpleEntity].
+     *
+     * @param childName The name of the child entity to retrieve.
+     * @return The child entity with the specified name, cast as a [SimpleEntity]. If no child with the specified name is found, null is returned.
+     */
     operator fun get(childName: String): SimpleEntity =
         children.find { it.getName() == childName } as SimpleEntity
 
