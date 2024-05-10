@@ -16,11 +16,13 @@
  *
  *
  * @param name The name of the root entity of the XML document.
+ * @param version The version of the XML document.
+ * @param encoding The encoding of the XML document.
  * @param build DSL lambda for building the structure of the XML document.
  * @return An instance of [XMLDocument] representing the created XML document.
  */
-fun document(name: String, build: XMLDocument.() -> Unit): XMLDocument {
-    return XMLDocument(name).apply { build(this) }
+fun document(name: String, version: Double = 1.0, encoding: String = "UTF-8", build: XMLDocument.() -> Unit): XMLDocument {
+    return XMLDocument(name,version,encoding).apply { build(this) }
 }
 
 /**
