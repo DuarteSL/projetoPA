@@ -60,5 +60,13 @@ class TesteDslXML {
 
         val ineedyou = (doc.getRoot() / "artists" / "beatles" / "help")["ineedyou"]
         assertEquals("ineedyou", ineedyou.getName())
+
+        assertThrows<IllegalStateException> {
+            doc.getRoot() / "artists" / "beatleserro"
+        }
+
+        assertThrows<IllegalStateException> {
+            (doc.getRoot() / "artists" / "beatles")["help"]
+        }
     }
 }

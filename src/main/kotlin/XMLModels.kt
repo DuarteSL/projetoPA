@@ -257,19 +257,29 @@ data class ParentEntity(
      * Overloads the div operator to retrieve a child entity by its name and returns it as a [ParentEntity].
      *
      * @param childName The name of the child entity to retrieve.
-     * @return The child entity with the specified name, cast as a [ParentEntity]. If no child with the specified name is found, null is returned.
+     * @return The child entity with the specified name, cast as a [ParentEntity].
+     * @throws IllegalStateException in case there isn't a child that is a [ParentEntity] with the given [childName].
      */
-    operator fun div(childName: String): ParentEntity =
-        children.find { it.getName() == childName } as ParentEntity
+    operator fun div(childName: String): ParentEntity {
+        val child = children.find { it.getName() == childName }
+        if (child is ParentEntity)
+            return child
+        error("No child that's a parent entity found with the given name")
+    }
 
     /**
      * Overloads the get operator to retrieve a child entity by its name and returns it as a [SimpleEntity].
      *
      * @param childName The name of the child entity to retrieve.
-     * @return The child entity with the specified name, cast as a [SimpleEntity]. If no child with the specified name is found, null is returned.
+     * @return The child entity with the specified name, cast as a [SimpleEntity].
+     * @throws IllegalStateException in case there isn't a child that is a [SimpleEntity] with the given [childName].
      */
-    operator fun get(childName: String): SimpleEntity =
-        children.find { it.getName() == childName } as SimpleEntity
+    operator fun get(childName: String): SimpleEntity {
+        val child = children.find { it.getName() == childName }
+        if (child is SimpleEntity)
+            return child
+        error("No child that's a simple entity found with the given name")
+    }
 
 
     /**
