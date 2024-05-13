@@ -33,13 +33,13 @@ class TesteDslXML {
     fun testAttributeCreation() {
         val doc = document("root") {
             parententity("artists") {
-                simpleentity("test") addAttr XMLAttribute("name", "simple")
+                simpleentity("simple") addAttr XMLAttribute("name", "simple")
             } addAttr XMLAttribute("name", "parent")
-        }
+        } addAttr XMLAttribute("name", "root")
         assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<root>\n" +
+                "<root name=\"root\">\n" +
                 "\t<artists name=\"parent\">\n" +
-                "\t\t<test name=\"simple\"/>\n" +
+                "\t\t<simple name=\"simple\"/>\n" +
                 "\t</artists>\n" +
                 "</root>\n", doc.toText())
     }

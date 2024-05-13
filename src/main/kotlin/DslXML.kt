@@ -12,7 +12,7 @@
  *         }
  *     } addAttr XMLAttribute("attribute1", "value1")
  *     simpleentity("secondchild")
- * }
+ * } addAttr XMLAttribute("rootattribute", "value0")
  *
  *
  * @param name The name of the root entity of the XML document.
@@ -83,6 +83,17 @@ fun ParentEntity.simpleentity(name: String): SimpleEntity {
  */
 infix fun XMLEntity.addAttr(attr: XMLAttribute): XMLEntity {
     this.addAttribute(attr)
+    return this
+}
+
+/**
+ * Adds an attribute to the document root XML entity.
+ *
+ * @param attr The XML attribute to add.
+ * @return The modified XML document.
+ */
+infix fun XMLDocument.addAttr(attr: XMLAttribute): XMLDocument {
+    this.getRoot().addAttribute(attr)
     return this
 }
 
