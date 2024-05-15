@@ -62,10 +62,10 @@ interface Adapter {
 /**
  * Converts an object to its XML representation.
  * @param obj The object to convert.
- * @return The XML entity representing the object.
+ * @return The XML [ParentEntity] representing the object.
  * @throws IllegalStateException in case a property isn't either marked with the [Exclude] annotation or the type of [XmlType] is not "entity" or "attribute".
  */
-fun objectToXMLInstance(obj: Any): XMLEntity {
+fun objectToXMLInstance(obj: Any): ParentEntity {
     val clazz = obj::class
 
     val classXmlId = clazz.findAnnotation<XmlId>()?.name ?: (clazz.simpleName + "")

@@ -125,6 +125,12 @@ class PropertiesOrder : Adapter {
         return map[childEntity.getName()] ?: Int.MAX_VALUE
     }
 }
+val liga = Liga("Liga Portuguesa", 2024, listOf(
+    Equipa(12,"Benfica",26, "JJ"),
+    Equipa(21,"Sporting", 24, "RA")
+))
+val ligaentity = objectToXMLInstance(liga)
+val document = XMLDocument(ligaentity)
 ```
 
 ### Tutorial DSL

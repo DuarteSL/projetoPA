@@ -13,8 +13,24 @@ class XMLDocument(
     private val version: Double = 1.0,
     private val encoding: String = "UTF-8"
 ) {
+    private lateinit var root: ParentEntity
 
-    private val root = ParentEntity(rootName)
+    init {
+        if (rootName.isNotBlank()) {
+            root = ParentEntity(rootName)
+        }
+    }
+
+    /**
+     * Represents an XML document.
+     *
+     * @property rootEntity The root entity of the XML document.
+     * @constructor Creates an XML document with the specified [version] and [encoding]. Defines the [root] of the XML document based of the specified [rootEntity].
+     */
+    constructor(rootEntity: ParentEntity, version: Double = 1.0, encoding: String = "UTF-8") : this("", version, encoding) {
+        root = rootEntity
+    }
+
     /**
      * Returns the root entity of the XML document.
      *

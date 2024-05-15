@@ -34,6 +34,9 @@ class TestReadMe {
         val treinador: String
     )
 
+    @XmlId("test")
+    class Teste()
+
     @Test
     fun testReadMe() {
         val liga = Liga("Liga Portuguesa", 2024, listOf(
@@ -42,7 +45,8 @@ class TestReadMe {
         ))
 
         val ligaentity = objectToXMLInstance(liga)
-        println(ligaentity.toText())
+        val document = XMLDocument(ligaentity)
+        println(document.toText())
     }
 }
 
