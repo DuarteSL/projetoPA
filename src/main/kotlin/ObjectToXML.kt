@@ -52,9 +52,9 @@ interface StringTransformer {
  */
 interface Adapter {
     /**
-     * Adapts the XML entity.
-     * @param entity The XML entity to be adapted.
-     * @return The adapted XML entity.
+     * Adapts the XML parent entity.
+     * @param entity The XML parent entity to be adapted.
+     * @return The adapted XML parent entity.
      */
     fun adapt(entity: ParentEntity): ParentEntity
 }

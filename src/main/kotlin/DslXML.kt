@@ -2,19 +2,6 @@
  * Defines a sample XML document structure using a DSL (Domain-Specific Language).
  * This DSL allows for easy creation of XML documents with nested entities.
  *
- * Example Usage:
- *
- * val doc = document("root") {
- *     parententity("parent") {
- *         simpleentity("child1") addAttr XMLAttribute("attribute2", "value2")
- *         parententity("child2") {
- *             simpleentity("grandchild") text "grandchildtext"
- *         }
- *     } addAttr XMLAttribute("attribute1", "value1")
- *     simpleentity("secondchild")
- * } addAttr XMLAttribute("rootattribute", "value0")
- *
- *
  * @param name The name of the root entity of the XML document.
  * @param version The version of the XML document.
  * @param encoding The encoding of the XML document.
