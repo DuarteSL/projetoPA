@@ -1,7 +1,6 @@
 /**
  * Add an attribute to all the XML entities with the specified name.
  *
- * @receiver [XMLDocument]
  * @param entityName The name of the XML entity to add attributes to.
  * @param attributeName The name of the attribute to add.
  * @param attributeValue The value of the attribute to add.
@@ -17,7 +16,6 @@ fun XMLDocument.addAttributes(entityName: String, attributeName: String, attribu
 /**
  * Changes the name of all the XML entities with a specified name.
  *
- * @receiver [XMLDocument]
  * @param entityName The current name of the XML entity.
  * @param newName The new name for the XML entity.
  * @throws IllegalStateException in case the given [newName] doesn't meet the requirementes for an XML entity name.
@@ -32,7 +30,6 @@ fun XMLDocument.changeEntityName(entityName: String, newName: String) {
 /**
  * Change the name of an attribute of all the XML entities with a specified name.
  *
- * @receiver [XMLDocument]
  * @param entityName The name of the XML entity containing the attribute.
  * @param attributeName The current name of the attribute.
  * @param newName The new name for the attribute.
@@ -52,7 +49,6 @@ fun XMLDocument.changeAttributeName(entityName: String, attributeName: String, n
 /**
  * Removes all the XML entities with a specified name.
  *
- * @receiver [XMLDocument]
  * @param entityName The name of the XML entities to remove.
  */
 fun XMLDocument.removeEntity(entityName: String) {
@@ -69,7 +65,6 @@ fun XMLDocument.removeEntity(entityName: String) {
 /**
  * Removes an attribute from all the XML entities with a specified name.
  *
- * @receiver [XMLDocument]
  * @param entityName The name of the XML entities containing the attribute to remove.
  * @param attributeName The name of the attribute to remove.
  */
@@ -89,7 +84,6 @@ fun XMLDocument.removeAttributeFromEntity(entityName: String, attributeName: Str
 /**
  * Finds XML entities with a specified name.
  *
- * @receiver [XMLDocument]
  * @param entityName The name of the XML entities to find.
  * @return A list of XML entities with the specified name.
  */
@@ -105,7 +99,6 @@ fun XMLDocument.findEntities(entityName: String): List<XMLEntity> {
 /**
  * Filters XML entities by an XPath expression.
  *
- * @receiver [XMLDocument]
  * @param xpath The XPath expression to filter by.
  * @return A list of XML entities filtered by the given XPath expression.
  */
